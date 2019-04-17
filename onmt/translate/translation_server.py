@@ -149,13 +149,16 @@ class TranslationServer(object):
 
         We use inputs[0]["id"] as the model id
         """
-
-        model_id = inputs[0].get("id", 0)
-        if model_id in self.models and self.models[model_id] is not None:
-            return self.models[model_id].run(inputs)
-        else:
-            print("Error No such model '%s'" % str(model_id))
-            raise ServerModelError("No such model '%s'" % str(model_id))
+        results = []
+        for input in inputs:
+            model_id = input.get("id", 0)
+            if model_id in self.models and self.models[model_id] is not None:
+                result = self.models[model_id].run([input])
+                results += result
+            else:
+                print("Error No such model '%s'" % str(model_id))
+                raise ServerModelError("No such model '%s'" % str(model_id))
+        return results
 
     def unload_model(self, model_id):
         """Manually unload a model.
