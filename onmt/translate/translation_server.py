@@ -158,7 +158,7 @@ class TranslationServer(object):
             else:
                 print("Error No such model '%s'" % str(model_id))
                 raise ServerModelError("No such model '%s'" % str(model_id))
-        return results
+        return [list(x) for x in zip(*results)]
 
     def unload_model(self, model_id):
         """Manually unload a model.
