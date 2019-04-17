@@ -154,10 +154,12 @@ class TranslationServer(object):
             model_id = input.get("id", 0)
             if model_id in self.models and self.models[model_id] is not None:
                 result = self.models[model_id].run([input])
+                print(result)
                 results += result
             else:
                 print("Error No such model '%s'" % str(model_id))
                 raise ServerModelError("No such model '%s'" % str(model_id))
+        print(results)
         return [list(x) for x in zip(*results)]
 
     def unload_model(self, model_id):
